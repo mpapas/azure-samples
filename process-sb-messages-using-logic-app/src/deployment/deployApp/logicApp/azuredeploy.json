@@ -38,7 +38,7 @@
             "properties": {
                 "displayName": "SBConnection1",
                 "api": {
-                    "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', 'centralus', '/managedApis/', 'servicebus')]"
+                    "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', parameters('location'), '/managedApis/', 'servicebus')]"
                 },
                 "parameterValues": {
                     "connectionString": "[parameters('servicebus_1_connectionString')]"
@@ -190,7 +190,7 @@
                     "$connections": {
                         "value": {
                             "servicebus_1": {
-                                "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', 'centralus', '/managedApis/', 'servicebus')]",
+                                "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', parameters('location'), '/managedApis/', 'servicebus')]",
                                 "connectionId": "[resourceId('Microsoft.Web/connections', variables('sb_1_Connection_Name'))]",
                                 "connectionName": "[variables('sb_1_Connection_Name')]"
                             }
