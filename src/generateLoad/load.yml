@@ -1,0 +1,10 @@
+config:
+  target: 'https://mcptestsb-am6ii3v4jf74m.azurewebsites.net'
+  phases:
+    - duration: 20
+      arrivalRate: 10
+scenarios:
+  - flow:
+    - get:
+        url: "/api/QueueMessage?code=ZFch9zaoFhUWeyYbcKjb2WFCvEckb09GXg6hPbT5a38EHoyXNcBnYQ=="
+        
