@@ -5,16 +5,10 @@
 
 ### Overview
 
-This solution deploys an Azure App Services web app configured for Python into a subnet using regional virtual network integration. An Azure Database for PostgreSQL server is also created. Both the web app and the database have their own private link and private DNS resources to only allow access to these resources over a private address space.
+This solution deploys an Azure App Services web app configured for Nodejs. The web app has its own private link and private DNS resources to only allow access to these resources over a private address space.
 
 The following resources are deployed as part of this solution:
 
-- Azure PostgreSQL Server
-  - Azure SQL DB
-  - Private link
-  - Private DNS zone
-- App Service Web app
-  - Regional virtual network integration
 - TBD
 
   Note that for traffic to pass from the web app to the private endpoints, the following web app environment variables must be set in the app.json nested template.
@@ -31,4 +25,3 @@ The following resources are deployed as part of this solution:
                         }
                     ]
                 }
-
