@@ -139,30 +139,25 @@
     },
     "variables": {
         "suffix": "[uniqueString(resourceGroup().id)]",
-        "resourceGroupName": "[resourceGroup().name]",
-        "webAppName": "[if(empty(parameters('webAppName')), concat('webApp', variables('suffix')), parameters('webAppName'))]",
-        "hostingPlanName": "[if(empty(parameters('hostingPlanName')), concat('hostingPlan', variables('suffix')), parameters('hostingPlanName'))]",
-        "postgreSQLserverName": "[if(empty(parameters('postgreSQLserverName')), concat('postgreSQL', variables('suffix')), parameters('postgreSQLserverName'))]",
+        "resourceGroupName": "[tolower(resourceGroup().name)]",
+        "webAppName": "[if(empty(parameters('webAppName')), concat('webApp-', variables('suffix')), parameters('webAppName'))]",
+        "hostingPlanName": "[if(empty(parameters('hostingPlanName')), concat('hostingPlan-', variables('suffix')), parameters('hostingPlanName'))]",
+        "postgreSQLserverName": "[if(empty(parameters('postgreSQLserverName')), concat('postgreSQL-', variables('suffix')), parameters('postgreSQLserverName'))]",
         "bastionPublicIpAddressName": "[if(empty(parameters('bastionPublicIpAddressName')), concat('bastionPIP-', variables('suffix')), parameters('bastionPublicIpAddressName'))]",
         "appGatewayPublicIpAddressName": "[if(empty(parameters('appGatewayPublicIpAddressName')), concat('appGatewayPIP-', variables('suffix')), parameters('appGatewayPublicIpAddressName'))]",
         "appGatewayWafName": "[if(empty(parameters('appGatewayWafName')), concat('appGatewayWAF-', variables('suffix')), parameters('appGatewayWafName'))]",
-
-
-        "bastionHostName": "[if(empty(parameters('bastionHostName')), concat('bastionHost', variables('suffix')), parameters('bastionHostName'))]",
-        "virtualNetworkName": "[if(empty(parameters('virtualNetworkName')), concat('vnet', variables('suffix')), parameters('virtualNetworkName'))]",
-
+        "bastionHostName": "[if(empty(parameters('bastionHostName')), concat('bastionHost-', variables('suffix')), parameters('bastionHostName'))]",
+        "virtualNetworkName": "[if(empty(parameters('virtualNetworkName')), concat('vnet-', variables('suffix')), parameters('virtualNetworkName'))]",
         "webAppPrivateEndpointName": "[if(empty(parameters('webAppPrivateEndpointName')), concat( variables('webAppName'), '-pe'), parameters('webAppPrivateEndpointName'))]",
         "databasePrivateEndpointName": "[if(empty(parameters('databasePrivateEndpointName')), concat( variables('postgreSQLserverName'), '-pe'), parameters('databasePrivateEndpointName'))]",
         "webAppPrivateDnsZoneName": "privatelink.azurewebsites.net",
         "databasePrivateDnsZoneName": "privatelink.postgres.database.azure.com",
-
         "virtualNetworkId": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
         "bastionSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'AzureBastionSubnet')]",
         "privateEndpointSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'default')]",
         "vmSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'default')]",
         "appGatewaySubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'appGatewaySubnet')]",
         "appGatewayBackendPoolFQDN": "[concat(variables('webAppName'), '.azurewebsites.net')]",
-
         "defaultSubnetPrefix": "10.1.0.0/24"
     },
     "resources": [
