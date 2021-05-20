@@ -67,7 +67,7 @@
         },
         "virtualMachineSize": {
             "type": "string",
-            "defaultValue": "Standard_B2s"            
+            "defaultValue": "Standard_D2s_v3"            
         },
         "osDiskType": {
             "type": "string",
@@ -79,11 +79,15 @@
         },
         "vmAdminPassword": {
             "type": "secureString"
-        }
+        },
+        "storageAccountName": {
+            "type": "string",
+            "defaultValue": ""            
+        }        
     },
     "variables": {
         "suffix": "[uniqueString(resourceGroup().id)]",
-        "resourceGroupName": "[resourceGroup().name]",
+        "resourceGroupName": "[toLower(resourceGroup().name)]",
         "webAppName": "[if(empty(parameters('webAppName')), concat('webApp', variables('suffix')), parameters('webAppName'))]",
         "hostingPlanName": "[if(empty(parameters('hostingPlanName')), concat('hostingPlan', variables('suffix')), parameters('hostingPlanName'))]",
         "bastionPublicIpAddressName": "[if(empty(parameters('bastionPublicIpAddressName')), concat('bastionPIP-', variables('suffix')), parameters('bastionPublicIpAddressName'))]",
@@ -95,7 +99,9 @@
         "bastionSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'AzureBastionSubnet')]",
         "privateEndpointSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'default')]",
         "vmSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'default')]",
-        "defaultSubnetPrefix": "10.1.0.0/24"
+        "defaultSubnetPrefix": "10.1.0.0/24",
+        "generatedStorageAccountName": "[concat(variables('resourceGroupName'), 'stor', variables('suffix'))]",
+        "useStorageAccountName": "[if(empty(parameters('storageAccountName')), variables('generatedStorageAccountName'), parameters('storageAccountName'))]"
     },
     "resources": [
         {
@@ -431,6 +437,67 @@
                     }
                 }
             }
-        }        
+        },
+        {
+            "name": "[variables('useStorageAccountName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-06-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "accessTier": "Hot",
+                "minimumTlsVersion": "TLS1_2",
+                "supportsHttpsTrafficOnly": true,
+                "allowBlobPublicAccess": true,
+                "allowSharedKeyAccess": true,
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "defaultAction": "Allow",
+                    "ipRules": []
+                }
+            },
+            "dependsOn": [],
+            "sku": {
+                "name": "Standard_ZRS"
+            },
+            "kind": "StorageV2",
+            "tags": {}
+        },
+        {
+            "name": "[concat(variables('useStorageAccountName'), '/default')]",
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2019-06-01",
+            "properties": {
+                "restorePolicy": {
+                    "enabled": false
+                },
+                "deleteRetentionPolicy": {
+                    "enabled": true,
+                    "days": 7
+                },
+                "changeFeed": {
+                    "enabled": false
+                },
+                "isVersioningEnabled": false
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Storage/storageAccounts/', variables('useStorageAccountName'))]"
+            ]
+        },
+        {
+            "name": "[concat(variables('useStorageAccountName'), '/default')]",
+            "type": "Microsoft.Storage/storageAccounts/fileservices",
+            "apiVersion": "2019-06-01",
+            "properties": {
+                "shareDeleteRetentionPolicy": {
+                    "enabled": true,
+                    "days": 7
+                }
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Storage/storageAccounts/', variables('useStorageAccountName'))]",
+                "[concat(concat('Microsoft.Storage/storageAccounts/', variables('useStorageAccountName')), '/blobServices/default')]"
+            ]
+        }
+
     ]
 }
