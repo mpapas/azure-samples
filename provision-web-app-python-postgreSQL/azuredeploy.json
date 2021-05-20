@@ -163,7 +163,7 @@
         "appGatewaySubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'appGatewaySubnet')]",
         "appGatewayBackendPoolFQDN": "[concat(variables('webAppName'), '.azurewebsites.net')]",
 
-        "defaultSubnetPrefix": "10.1.0.0/24",
+        "defaultSubnetPrefix": "10.1.0.0/24"
     },
     "resources": [
         {
