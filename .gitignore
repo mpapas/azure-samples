@@ -355,3 +355,5 @@ local.settings.json
 local.*.ps1
 local.*.txt
 local.*.yml
+
+.vscode/

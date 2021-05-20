@@ -163,7 +163,7 @@
             "name": "[variables('hostingPlanName')]",
             "type": "Microsoft.Web/serverfarms",
             "location": "[parameters('location')]",
-            "kind": "",
+            "kind": "app",
             "tags": {
                 "displayName": "Hosting Plan"
             },
@@ -179,6 +179,7 @@
             "name": "[variables('webAppName')]",
             "type": "Microsoft.Web/sites",
             "location": "[parameters('location')]",
+            "kind": "app",            
             "tags": {
                 "displayName": "Website"
             },
