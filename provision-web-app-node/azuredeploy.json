@@ -100,7 +100,7 @@
         "privateEndpointSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'default')]",
         "vmSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'default')]",
         "defaultSubnetPrefix": "10.1.0.0/24",
-        "generatedStorageAccountName": "[concat(variables('resourceGroupName'), 'stor', variables('suffix'))]",
+        "generatedStorageAccountName": "[concat('stor', variables('suffix'))]",
         "useStorageAccountName": "[if(empty(parameters('storageAccountName')), variables('generatedStorageAccountName'), parameters('storageAccountName'))]"
     },
     "resources": [
