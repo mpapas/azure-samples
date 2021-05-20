@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "postgreSQLadminLoginPassword": {
-            "value": ""
+            "value": "GEN-PASSWORD"
         }, 
         "vmAdminPassword": {
-            "value": ""
+            "value": "GEN-PASSWORD"
         }        
     }
 }
