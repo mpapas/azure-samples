@@ -10,7 +10,7 @@
             "type": "string",
             "defaultValue": ""
         },
-        "postgreSQLserverName": {
+        "postgreSqlServerName": {
             "type": "string",
             "defaultValue": ""
         },
@@ -62,50 +62,50 @@
             "defaultValue": "PYTHON|3.8"   
         },
 
-        "postgreSQLadminLogin": {
+        "postgreSqlAdminLogin": {
             "type": "string",
             "defaultValue": "sqladmin"
         },
-        "postgreSQLadminLoginPassword": {
+        "postgreSqlAdminLoginPassword": {
             "type": "securestring"
         },
-        "postgreSQLskuCapacity": {
+        "postgreSqlSkuCapacity": {
             "type": "int",
             "defaultValue": 4
         },
-        "postgreSQLskuFamily": {
+        "postgreSqlSkuFamily": {
             "type": "string",
             "defaultValue": "Gen5"
         },
-        "postgreSQLskuName": {
+        "postgreSqlSkuName": {
             "type": "string",
             "defaultValue": "GP_Gen5_4"
         },
-        "postgreSQLskuSizeMB": {
+        "postgreSqlSkuSizeMB": {
             "type": "int",
             "defaultValue": 102400
         },
-        "postgreSQLskuTier": {
+        "postgreSqlSkuTier": {
             "type": "string",
             "defaultValue": "GeneralPurpose"
         },
-        "postgreSQLversion": {
+        "postgreSqlVersion": {
             "type": "string",
             "defaultValue": "11"
         },
-        "postgreSQLbackupRetentionDays": {
+        "postgreSqlBackupRetentionDays": {
             "type": "int",
             "defaultValue": 7
         },
-        "postgreSQLgeoRedundantBackup": {
+        "postgreSqlGeoRedundantBackup": {
             "type": "string",
             "defaultValue": "Disabled"
         },
-        "postgreSQLstorageAutoGrow": {
+        "postgreSqlStorageAutoGrow": {
             "type": "string",
             "defaultValue": "Disabled"
         },
-        "postgreSQLinfrastructureEncryption": {
+        "postgreSqlInfrastructureEncryption": {
             "type": "string",
             "defaultValue": "Disabled"
         },
@@ -142,7 +142,7 @@
         "resourceGroupName": "[tolower(resourceGroup().name)]",
         "webAppName": "[if(empty(parameters('webAppName')), concat('webApp-', variables('suffix')), parameters('webAppName'))]",
         "hostingPlanName": "[if(empty(parameters('hostingPlanName')), concat('hostingPlan-', variables('suffix')), parameters('hostingPlanName'))]",
-        "postgreSQLserverName": "[if(empty(parameters('postgreSQLserverName')), concat('postgreSQL-', variables('suffix')), parameters('postgreSQLserverName'))]",
+        "postgreSqlServerName": "[if(empty(parameters('postgreSqlServerName')), concat('postgreSQL-', variables('suffix')), parameters('postgreSqlServerName'))]",
         "bastionPublicIpAddressName": "[if(empty(parameters('bastionPublicIpAddressName')), concat('bastionPIP-', variables('suffix')), parameters('bastionPublicIpAddressName'))]",
         "appGatewayPublicIpAddressName": "[if(empty(parameters('appGatewayPublicIpAddressName')), concat('appGatewayPIP-', variables('suffix')), parameters('appGatewayPublicIpAddressName'))]",
         "appGatewayWafName": "[if(empty(parameters('appGatewayWafName')), concat('appGatewayWAF-', variables('suffix')), parameters('appGatewayWafName'))]",
@@ -263,7 +263,7 @@
                     "appSettings": [
                         {
                             "name": "DBHOST",
-                            "value": "[variables('postgreSQLserverName')]",
+                            "value": "[variables('postgreSqlServerName')]",
                             "slotSetting": false
                         },
                         {
@@ -273,12 +273,12 @@
                         },
                         {
                             "name": "DBPASS",
-                            "value": "[parameters('postgreSQLadminLoginPassword')]",
+                            "value": "[parameters('postgreSqlAdminLoginPassword')]",
                             "slotSetting": false
                         },
                         {
                             "name": "DBUSER",
-                            "value": "[parameters('postgreSQLadminLogin')]",
+                            "value": "[parameters('postgreSqlAdminLogin')]",
                             "slotSetting": false
                         },
                         {
@@ -341,25 +341,25 @@
             "tags": {
                 "displayName": "postgreSQL"
             },            
-            "name": "[variables('postgreSQLserverName')]",
+            "name": "[variables('postgreSqlServerName')]",
             "properties": {
-                "version": "[parameters('postgreSQLversion')]",
-                "administratorLogin": "[parameters('postgreSQLadminLogin')]",
-                "administratorLoginPassword": "[parameters('postgreSQLadminLoginPassword')]",
+                "version": "[parameters('postgreSqlVersion')]",
+                "administratorLogin": "[parameters('postgreSqlAdminLogin')]",
+                "administratorLoginPassword": "[parameters('postgreSqlAdminLoginPassword')]",
                 "storageProfile": {
-                    "storageMB": "[parameters('postgreSQLskuSizeMB')]",
-                    "backupRetentionDays": "[parameters('postgreSQLbackupRetentionDays')]",
-                    "geoRedundantBackup": "[parameters('postgreSQLgeoRedundantBackup')]",
-                    "storageAutoGrow": "[parameters('postgreSQLstorageAutoGrow')]"
+                    "storageMB": "[parameters('postgreSqlSkuSizeMB')]",
+                    "backupRetentionDays": "[parameters('postgreSqlBackupRetentionDays')]",
+                    "geoRedundantBackup": "[parameters('postgreSqlGeoRedundantBackup')]",
+                    "storageAutoGrow": "[parameters('postgreSqlStorageAutoGrow')]"
                 },
-                "infrastructureEncryption": "[parameters('postgreSQLinfrastructureEncryption')]"
+                "infrastructureEncryption": "[parameters('postgreSqlInfrastructureEncryption')]"
             },
             "sku": {
-                "name": "[parameters('postgreSQLskuName')]",
-                "tier": "[parameters('postgreSQLskuTier')]",
-                "capacity": "[parameters('postgreSQLskuCapacity')]",
-                "size": "[parameters('postgreSQLskuSizeMB')]",
-                "family": "[parameters('postgreSQLskuFamily')]"
+                "name": "[parameters('postgreSqlSkuName')]",
+                "tier": "[parameters('postgreSqlSkuTier')]",
+                "capacity": "[parameters('postgreSqlSkuCapacity')]",
+                "size": "[parameters('postgreSqlSkuSizeMB')]",
+                "family": "[parameters('postgreSqlSkuFamily')]"
             },
             "type": "Microsoft.DBforPostgreSQL/servers"
         },
@@ -450,7 +450,7 @@
             "name": "[variables('databasePrivateEndpointName')]",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[resourceId('Microsoft.DBforPostgreSQL/servers', variables('postgreSQLserverName'))]",
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', variables('postgreSqlServerName'))]",
                 "[variables('privateEndpointSubnetId')]"                
             ],
            "tags": {
@@ -464,7 +464,7 @@
                     {
                         "name": "[variables('databasePrivateEndpointName')]",
                         "properties": {
-                            "privateLinkServiceId": "[resourceId('Microsoft.DBforPostgreSQL/servers', variables('postgreSQLserverName'))]",
+                            "privateLinkServiceId": "[resourceId('Microsoft.DBforPostgreSQL/servers', variables('postgreSqlServerName'))]",
                             "groupIds": [ 
                                 "postgresqlServer" 
                             ]
