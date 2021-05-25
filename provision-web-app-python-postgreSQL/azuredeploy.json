@@ -217,7 +217,7 @@
                     {
                         "name": "appSvcVnetIntSubnet",
                         "properties": {
-                            "addressPrefix": "[parameters('appGatewaySubnetAddressPrefix')]",
+                            "addressPrefix": "[parameters('appSvcVnetIntSubnetAddressPrefix')]",
                             "delegations": [
                                 {
                                     "name": "delgation",
