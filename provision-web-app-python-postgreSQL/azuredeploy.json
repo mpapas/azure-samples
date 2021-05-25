@@ -135,6 +135,26 @@
         },
         "vmAdminPassword": {
             "type": "secureString"
+        },
+        "vnetAddressSpace":{
+            "type": "string",
+            "defaultValue": "10.1.0.0/16"    
+        },
+        "defaultSubnetAddressPrefix":{
+            "type": "string",
+            "defaultValue": "10.1.0.0/24"    
+        },
+        "azureBastionSubnetAddressPrefix":{
+            "type": "string",
+            "defaultValue": "10.1.1.0/27"    
+        },
+        "appGatewaySubnetAddressPrefix": {
+            "type": "string",
+            "defaultValue": "10.1.2.0/24"                
+        },
+        "appSvcVnetIntSubnetAddressPrefix": {
+            "type": "string",
+            "defaultValue": "10.1.3.0/26"            
         }
     },
     "variables": {
@@ -157,8 +177,7 @@
         "privateEndpointSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'default')]",
         "vmSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'default')]",
         "appGatewaySubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'appGatewaySubnet')]",
-        "appGatewayBackendPoolFQDN": "[concat(variables('webAppName'), '.azurewebsites.net')]",
-        "defaultSubnetPrefix": "10.1.0.0/24"
+        "appGatewayBackendPoolFQDN": "[concat(variables('webAppName'), '.azurewebsites.net')]"
     },
     "resources": [
         {
@@ -173,32 +192,32 @@
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
-                        "10.1.0.0/16"
+                        "[parameters('vnetAddressSpace')]"
                     ]
                 },
                 "subnets": [
                     {
                         "name": "default",
                         "properties": {
-                            "addressPrefix": "[variables('defaultSubnetPrefix')]"
+                            "addressPrefix": "[parameters('defaultSubnetAddressPrefix')]"
                         }
                     },
                     {
                         "name": "AzureBastionSubnet",
                         "properties": {
-                            "addressPrefix": "10.1.1.0/27"
+                            "addressPrefix": "[parameters('azureBastionSubnetAddressPrefix')]"
                         }
                     },
                     {
                         "name": "appGatewaySubnet",
                         "properties": {
-                            "addressPrefix": "10.1.2.0/24"
+                            "addressPrefix": "[parameters('appGatewaySubnetAddressPrefix')]"
                         }
                     },
                     {
-                        "name": "appSvcVnetInt",
+                        "name": "appSvcVnetIntSubnet",
                         "properties": {
-                            "addressPrefix": "10.1.3.0/26",
+                            "addressPrefix": "[parameters('appGatewaySubnetAddressPrefix')]",
                             "delegations": [
                                 {
                                     "name": "delgation",
@@ -218,7 +237,7 @@
             "name": "[concat(variables('virtualNetworkName'), '/default')]",
             "id": "[variables('privateEndpointSubnetId')]",     
             "properties": {
-                "addressPrefix": "[variables('defaultSubnetPrefix')]",
+                "addressPrefix": "[parameters('defaultSubnetAddressPrefix')]",
                 "privateEndpointNetworkPolicies": "Disabled",
                 "privateLinkServiceNetworkPolicies": "Enabled"
             },
@@ -327,7 +346,7 @@
                         "[resourceId('Microsoft.Web/sites', variables('webAppName'))]"
                     ],
                     "properties": {
-                        "subnetResourceId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'appSvcVnetInt')]",
+                        "subnetResourceId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'appSvcVnetIntSubnet')]",
                         "swiftSupported": true
                     }
                 }                       
