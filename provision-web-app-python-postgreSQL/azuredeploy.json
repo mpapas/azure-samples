@@ -235,6 +235,70 @@
             }
         },
         {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2020-11-01",
+            "name": "[concat(variables('virtualNetworkName'), '/appSvcVnetIntSubnet')]",
+            "dependsOn": [
+                "[variables('virtualNetworkId')]"
+            ],
+            "properties": {
+                "addressPrefix": "[parameters('appSvcVnetIntSubnetAddressPrefix')]",
+                "delegations": [
+                    {
+                        "name": "delegation",
+                        "properties": {
+                            "serviceName": "Microsoft.Web/serverfarms"
+                        }
+                    }
+                ],
+                "privateEndpointNetworkPolicies": "Enabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2020-11-01",
+            "name": "[concat(variables('virtualNetworkName'), '/AzureBastionSubnet')]",
+            "dependsOn": [
+                "[variables('virtualNetworkId')]"
+            ],
+            "properties": {
+                "addressPrefix": "[parameters('azureBastionSubnetAddressPrefix')]",
+                "delegations": [],
+                "privateEndpointNetworkPolicies": "Enabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2020-11-01",
+            "name": "[concat(variables('virtualNetworkName'), '/appGatewaySubnet')]",
+            "dependsOn": [
+                "[variables('virtualNetworkId')]"
+            ],
+            "properties": {
+                "addressPrefix": "[parameters('appGatewaySubnetAddressPrefix')]",
+                "serviceEndpoints": [],
+                "delegations": [],
+                "privateEndpointNetworkPolicies": "Enabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2020-11-01",
+            "name": "[concat(variables('virtualNetworkName'), '/default')]",
+            "dependsOn": [
+                "[variables('virtualNetworkId')]"
+            ],
+            "properties": {
+                "addressPrefix": "[parameters('defaultSubnetAddressPrefix')]",
+                "delegations": [],
+                "privateEndpointNetworkPolicies": "Disabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+        },        
+        {
             "apiVersion": "2018-02-01",
             "name": "[variables('hostingPlanName')]",
             "type": "Microsoft.Web/serverfarms",
@@ -263,7 +327,7 @@
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Web/serverfarms/', variables('hostingPlanName'))]",
-                "[variables('virtualNetworkId')]"
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'appSvcVnetIntSubnet')]"
             ],
             "properties": {
                 "siteConfig": {
@@ -378,7 +442,7 @@
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', variables('webAppName'))]",
-                "[variables('virtualNetworkId')]"
+                "[variables('privateEndpointSubnetId')]"
             ],
            "tags": {
                 "displayName": "webApp private endpoint"
@@ -459,7 +523,7 @@
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.DBforPostgreSQL/servers', variables('postgreSqlServerName'))]",
-                "[variables('virtualNetworkId')]"                
+                "[variables('privateEndpointSubnetId')]"
             ],
            "tags": {
                 "displayName": "postgreSQL private endpoint"
@@ -571,7 +635,8 @@
             "name": "[variables('bastionHostName')]",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[resourceId(variables('resourceGroupName'), 'Microsoft.Network/publicIpAddresses', variables('bastionPublicIpAddressName'))]"
+                "[resourceId(variables('resourceGroupName'), 'Microsoft.Network/publicIpAddresses', variables('bastionPublicIpAddressName'))]",
+                "[variables('bastionSubnetId')]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -599,7 +664,7 @@
             "location": "centralus",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses', variables('appGatewayPublicIpAddressName'))]",
-                "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'appGatewaySubnet')]"
+                "[variables('appGatewaySubnetId')]"
             ],
             "properties": {
                 "sku": {
@@ -725,7 +790,7 @@
             "apiVersion": "2018-10-01",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[variables('virtualNetworkId')]"
+                "[variables('vmSubnetId')]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -747,7 +812,7 @@
             "apiVersion": "2021-03-01",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'))]"
+                "[resourceId('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'))]"
             ],
             "properties": {
                 "hardwareProfile": {
