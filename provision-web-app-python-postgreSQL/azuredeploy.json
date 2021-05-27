@@ -178,7 +178,7 @@
         "vmSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'default')]",
         "appGatewaySubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'appGatewaySubnet')]",
         "appSvcVnetIntSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), 'appSvcVnetIntSubnet')]",
-        "appGatewayBackendPoolFQDN": "[concat(variables('webAppName'), '.azurewebsites.net')]",
+        "appGatewayBackendPoolFQDN": "[concat(variables('webAppName'), '.azurewebsites.net')]"
     },
     "resources": [
         {
