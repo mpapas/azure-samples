@@ -373,7 +373,8 @@
                     "geoRedundantBackup": "[parameters('postgreSqlGeoRedundantBackup')]",
                     "storageAutoGrow": "[parameters('postgreSqlStorageAutoGrow')]"
                 },
-                "infrastructureEncryption": "[parameters('postgreSqlInfrastructureEncryption')]"
+                "infrastructureEncryption": "[parameters('postgreSqlInfrastructureEncryption')]",
+                "publicNetworkAccess": "Disabled"
             },
             "sku": {
                 "name": "[parameters('postgreSqlSkuName')]",
