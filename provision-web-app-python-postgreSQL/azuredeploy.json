@@ -277,7 +277,7 @@
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Web/serverfarms/', variables('hostingPlanName'))]",
-                "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
+                "[variables('virtualNetworkId')]"
             ],
             "properties": {
                 "siteConfig": {
