@@ -671,6 +671,7 @@
             "location": "centralus",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses', variables('appGatewayPublicIpAddressName'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
                 "[variables('appGatewaySubnetId')]"
             ],
             "properties": {
