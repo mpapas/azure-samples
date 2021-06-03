@@ -671,8 +671,11 @@
             "location": "centralus",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses', variables('appGatewayPublicIpAddressName'))]",
-                "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
-                "[variables('appGatewaySubnetId')]"
+                "[variables('virtualNetworkId')]",
+                "[variables('appGatewaySubnetId')]",
+                "[variables('virtualNetworkId')]",
+                "[variables('bastionSubnetId')]",
+                "[variables('appSvcVnetIntSubnetId')]"                
             ],
             "properties": {
                 "sku": {
