@@ -672,7 +672,6 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses', variables('appGatewayPublicIpAddressName'))]",
                 "[variables('appGatewaySubnetId')]",
-                "[variables('virtualNetworkId')]",
                 "[variables('bastionSubnetId')]",
                 "[variables('appSvcVnetIntSubnetId')]"                
             ],
